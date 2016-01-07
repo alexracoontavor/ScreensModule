@@ -1,9 +1,6 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System;
-using System.Collections.Generic;
 using UnityEngine.UI;
-using UnityEditor;
 
 namespace Diwip.UI.Screens.ConcreteExample
 {

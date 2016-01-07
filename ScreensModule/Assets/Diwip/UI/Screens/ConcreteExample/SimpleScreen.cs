@@ -127,13 +127,23 @@ namespace Diwip.UI.Screens.ConcreteExample
 
             this.onTransitionComplete = onTransitionComplete;
 
-            PlayAnim();
+            if (animator != null)
+            {
+                PlayAnim();
+            }
+            else
+            {
+                DismissAnim();
+            }
         }
 
         private void PlayAnim()
         {
-            animator.Play(currentAnimName, 0, 0.0f);
-            currNormalizedTime = -1;
+            if (animator != null)
+            {
+                animator.Play(currentAnimName, 0, 0.0f);
+                currNormalizedTime = -1;
+            }
         }
 
         /// <summary>
@@ -158,21 +168,6 @@ namespace Diwip.UI.Screens.ConcreteExample
                 DismissAnim();
         }
 
-        /// <summary>
-        /// Coroutine to detect animation end
-        /// </summary>
-        /// <returns></returns>
-        private IEnumerator DismissOnAnimationEnd()
-        {
-            AnimatorStateInfo info = animator.GetCurrentAnimatorStateInfo(0);
-
-            while (info.IsName(currentAnimName) && info.normalizedTime <= 0.999f)
-            {
-                yield return new WaitForEndOfFrame();
-            }
-
-            DismissAnim();
-        }
 
         /// <summary>
         /// Called when animation is complete
