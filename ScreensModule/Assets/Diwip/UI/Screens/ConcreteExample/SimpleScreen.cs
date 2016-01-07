@@ -35,7 +35,7 @@ namespace Diwip.UI.Screens.ConcreteExample
         protected override void Start()
         {
             canvas = transform.GetOrAddComponent<Canvas>();
-            canvas.overrideSorting = false;
+            canvas.overrideSorting = true;
             graphicRaycaster = transform.GetOrAddComponent<GraphicRaycaster>();
             canvasGroup = transform.GetOrAddComponent<CanvasGroup>();
 
