@@ -15,6 +15,7 @@ namespace Diwip.UI.Screens
     /// </summary>
     public abstract class BaseScreen : MonoBehaviour
     {
+        public bool isHideOnLoad = true;
         public int priority = 0;
         public ScreenType screenType = ScreenType.Screen;
 
@@ -198,7 +199,11 @@ namespace Diwip.UI.Screens
             if (!typeToInstanceTable.ContainsKey(type))
             {
                 typeToInstanceTable[type] = screen;
-                screen.Hide();
+
+                if (screen.isHideOnLoad)
+                    screen.Hide();
+                else
+                    screen.Show();
             }
         }
 

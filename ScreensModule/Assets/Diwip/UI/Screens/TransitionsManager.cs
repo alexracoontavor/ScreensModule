@@ -29,6 +29,9 @@ namespace Diwip.UI.Screens
 
         public void Transition(BaseScreen from, BaseScreen to)
         {
+            if (from == to)
+                from = null;
+
             this.to = to;
             this.from = from;
 

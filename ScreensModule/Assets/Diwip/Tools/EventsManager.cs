@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Stego.Data;
+using System;
 
 namespace Diwip.Tools.Events
 {
@@ -43,6 +45,17 @@ namespace Diwip.Tools.Events
             if (events.ContainsKey(eventType))
             {
                 events.Remove(eventType);
+            }
+        }
+
+        internal static void Dispatch<T>(T eventInstance) where T : BaseEvent
+        {
+            if (events.ContainsKey(typeof(T)))
+            {
+                foreach (BaseEventHandler handler in events[typeof(T)])
+                {
+                    handler(eventInstance);
+                }
             }
         }
     }
