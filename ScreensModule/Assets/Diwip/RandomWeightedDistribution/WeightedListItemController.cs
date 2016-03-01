@@ -8,13 +8,9 @@ public class WeightedListItemController : MonoBehaviour {
     public InputField inputField;
     WeightedRandomDistributionViewPopulator controller;
 
-    int value, totalValue = 0;
-
     public void Populate(WeightedRandomDistributionViewPopulator controller, int value, int totalValue)
     {
         this.controller = controller;
-        this.value = value;
-        this.totalValue = totalValue;
 
         fillImage.fillAmount = (float)value / (float)totalValue;
         inputField.text = value.ToString();

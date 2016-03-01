@@ -4,7 +4,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System;
 
-public class DataImporter
+public class SerializedDataImporter
 {
     static string dirName = "Data";
 

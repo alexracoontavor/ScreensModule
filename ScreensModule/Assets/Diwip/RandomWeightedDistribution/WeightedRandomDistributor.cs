@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class WeightedRandomDistributor
 {
-    int values;
     int[] _weights;
 
     int _totalWeight = 10000;
@@ -49,7 +48,6 @@ public class WeightedRandomDistributor
 
     public WeightedRandomDistributor(int values)
     {
-        this.values = values;
         this._weights = new int[values];
         PopulateDefaultWeights();
     }
