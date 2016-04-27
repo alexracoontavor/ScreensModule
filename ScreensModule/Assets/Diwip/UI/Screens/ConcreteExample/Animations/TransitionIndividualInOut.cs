@@ -2,8 +2,9 @@
 {
     public class TransitionIndividualInOut : Transition
     {
-        SimpleScreen from, to;
-        TransitionComplete onTransitionComplete;
+        private SimpleScreen _from;
+        private SimpleScreen _to;
+        private TransitionComplete _onTransitionComplete;
 
         public override void Play<T>(T from, T to, TransitionComplete onTransitionComplete)
         {

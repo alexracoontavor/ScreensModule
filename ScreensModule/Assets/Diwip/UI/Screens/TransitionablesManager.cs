@@ -7,7 +7,7 @@ using System.Collections.Generic;
 /// </summary>
 namespace Diwip.UI.Screens
 {
-    public enum ScreenType { Screen, Popup, HUD };
+    public enum ScreenType { Screen, Popup, Hud };
 
     /// <summary>
     /// The Client abstract base
@@ -15,13 +15,13 @@ namespace Diwip.UI.Screens
     /// </summary>
     public abstract class BaseScreen : MonoBehaviour
     {
-        public bool isHideOnLoad = true;
-        public int priority = 0;
-        public ScreenType screenType = ScreenType.Screen;
+        public bool IsHideOnLoad = true;
+        public int Priority = 0;
+        public ScreenType ScreenType = ScreenType.Screen;
 
-        public Transition transition;
+        public Transition Transition;
 
-        public TransitionablesManager screensManager;
+        public TransitionablesManager ScreensManager;
 
         protected virtual void Start()
         {
@@ -38,20 +38,20 @@ namespace Diwip.UI.Screens
         /// </summary>
         protected void Initialize()
         {
-            if (screensManager == null)
-                screensManager = FindObjectOfType<TransitionablesManager>();
+            if (ScreensManager == null)
+                ScreensManager = FindObjectOfType<TransitionablesManager>();
 
-            if (screensManager == null)
+            if (ScreensManager == null)
                 throw new System.Exception(GetType().ToString() + " could not find ScreensManager!");
 
-            screensManager.Register(GetType(), this);
+            ScreensManager.Register(GetType(), this);
         }
 
         protected void Deinitialize()
         {
-            if (screensManager != null)
+            if (ScreensManager != null)
             {
-                screensManager.Deregister(GetType());
+                ScreensManager.Deregister(GetType());
             }
         }
 
@@ -98,15 +98,15 @@ namespace Diwip.UI.Screens
         /// Instance of class responsible for transitions
         /// </summary>
         [SerializeField]
-        protected TransitionsManager transitions;
+        protected TransitionsManager Transitions;
 
         /// <summary>
         /// The manager responsible for distributing screens among sub-managers
         /// </summary>
         [SerializeField]
-        protected TransitionablesManager screensManager;
+        protected TransitionablesManager ScreensManager;
 
-        protected BaseScreen currentTop;
+        protected BaseScreen CurrentTop;
 
         protected void Awake()
         {
@@ -119,11 +119,11 @@ namespace Diwip.UI.Screens
 
         protected virtual void Start()
         {
-            if (transitions == null)
-                transitions = GameObject.FindObjectOfType<TransitionsManager>();
+            if (Transitions == null)
+                Transitions = GameObject.FindObjectOfType<TransitionsManager>();
 
-            if (screensManager == null)
-                screensManager = GameObject.FindObjectOfType<TransitionablesManager>();
+            if (ScreensManager == null)
+                ScreensManager = GameObject.FindObjectOfType<TransitionablesManager>();
         }
 
         public abstract void Show(System.Type screenType);
@@ -144,8 +144,8 @@ namespace Diwip.UI.Screens
     /// </summary>
     public abstract class TransitionablesManager : TransitionableManagerBase
     {
-        protected Dictionary<System.Type, BaseScreen> typeToInstanceTable = new Dictionary<Type, BaseScreen>();
-        protected Dictionary<ScreenType, TransitionableManagerBase> transitionableManagers = new Dictionary<ScreenType, TransitionableManagerBase>();
+        protected Dictionary<System.Type, BaseScreen> TypeToInstanceTable = new Dictionary<Type, BaseScreen>();
+        protected Dictionary<ScreenType, TransitionableManagerBase> TransitionableManagers = new Dictionary<ScreenType, TransitionableManagerBase>();
 
         /// <summary>
         /// Finds the appropriate manager and starts transition process to hide the screen
@@ -153,9 +153,9 @@ namespace Diwip.UI.Screens
         /// <param name="screenType">The screen to hide in this transition</param>
         public override void Hide(Type screenType)
         {
-            if (typeToInstanceTable.ContainsKey(screenType))
+            if (TypeToInstanceTable.ContainsKey(screenType))
             {
-                transitionableManagers[typeToInstanceTable[screenType].screenType].Hide(screenType);
+                TransitionableManagers[TypeToInstanceTable[screenType].ScreenType].Hide(screenType);
             }
         }
 
@@ -165,9 +165,9 @@ namespace Diwip.UI.Screens
         /// <param name="screenType">The screen type to show in this transition</param>
         public override void Show(Type screenType)
         {
-            if (typeToInstanceTable.ContainsKey(screenType))
+            if (TypeToInstanceTable.ContainsKey(screenType))
             {
-                transitionableManagers[typeToInstanceTable[screenType].screenType].Show(screenType);
+                TransitionableManagers[TypeToInstanceTable[screenType].ScreenType].Show(screenType);
             }
         }
 
@@ -178,9 +178,9 @@ namespace Diwip.UI.Screens
         /// <returns></returns>
         public BaseScreen GetInstanceByType(Type type)
         {
-            if (typeToInstanceTable.ContainsKey(type))
+            if (TypeToInstanceTable.ContainsKey(type))
             {
-                return typeToInstanceTable[type];
+                return TypeToInstanceTable[type];
             }
             else
             {
@@ -196,11 +196,11 @@ namespace Diwip.UI.Screens
         /// <param name="screen">screen instance</param>
         internal void Register<T>(Type type, T screen) where T : BaseScreen
         {
-            if (!typeToInstanceTable.ContainsKey(type))
+            if (!TypeToInstanceTable.ContainsKey(type))
             {
-                typeToInstanceTable[type] = screen;
+                TypeToInstanceTable[type] = screen;
 
-                if (screen.isHideOnLoad)
+                if (screen.IsHideOnLoad)
                     screen.Hide();
                 else
                     screen.Show();
@@ -213,9 +213,9 @@ namespace Diwip.UI.Screens
         /// <param name="type">Explicit System.Type of the screen</param>
         internal void Deregister(Type type)
         {
-            if (typeToInstanceTable.ContainsKey(type))
+            if (TypeToInstanceTable.ContainsKey(type))
             {
-                typeToInstanceTable.Remove(type);
+                TypeToInstanceTable.Remove(type);
             }
         }
     }

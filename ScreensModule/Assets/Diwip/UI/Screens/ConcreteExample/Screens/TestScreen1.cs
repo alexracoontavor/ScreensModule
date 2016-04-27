@@ -7,7 +7,7 @@ namespace Diwip.UI.Screens.ConcreteExample
     {
         public void ShowScreen0()
         {
-            screensManager.Show(typeof(TestScreen0));
+            ScreensManager.Show(typeof(TestScreen0));
         }
     }
 }

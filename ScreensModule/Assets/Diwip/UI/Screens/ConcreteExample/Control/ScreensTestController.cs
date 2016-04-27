@@ -13,11 +13,11 @@ namespace Diwip.UI.Screens.ConcreteExample
     /// </summary>
     public class ScreensTestController : SimpleScreen
     {
-        public Dropdown dropdown;
-        BaseScreen[] screens;
+        public Dropdown Dropdown;
+        private BaseScreen[] _screens;
 
-        bool isOpened;
-        int selectedIndex = 0;
+        private bool _isOpened;
+        private int _selectedIndex = 0;
 
         protected override void Start()
         {
@@ -34,7 +34,7 @@ namespace Diwip.UI.Screens.ConcreteExample
 
         private void PopulateDropdown(BaseScreen[] screens)
         {
-            this.screens = screens;
+            this._screens = screens;
 
             List<Dropdown.OptionData> data = new List<Dropdown.OptionData>();
 
@@ -46,42 +46,42 @@ namespace Diwip.UI.Screens.ConcreteExample
                 data.Add(new Dropdown.OptionData(s));
             }
 
-            dropdown.AddOptions(data);
+            Dropdown.AddOptions(data);
         }
 
         public void ItemSelected()
         {
-            selectedIndex = dropdown.value;
+            _selectedIndex = Dropdown.value;
         }
 
         public void ToggleOpened()
         {            
-            if (!isOpened)
-                screensManager.Show(typeof(ScreensTestController));
+            if (!_isOpened)
+                ScreensManager.Show(typeof(ScreensTestController));
             else
-                screensManager.Hide(typeof(ScreensTestController));
+                ScreensManager.Hide(typeof(ScreensTestController));
         }
 
         public override void Show()
         {
             base.Show();
-            isOpened = true;
+            _isOpened = true;
         }
 
         public override void Hide()
         {
             base.Hide();
-            isOpened = false;
+            _isOpened = false;
         }
 
         public void OpenSelected()
         {
-            screensManager.Show(screens[selectedIndex].GetType());
+            ScreensManager.Show(_screens[_selectedIndex].GetType());
         }
 
         public void CloseSelected()
         {
-            screensManager.Hide(screens[selectedIndex].GetType());
+            ScreensManager.Hide(_screens[_selectedIndex].GetType());
         }
     }
 }

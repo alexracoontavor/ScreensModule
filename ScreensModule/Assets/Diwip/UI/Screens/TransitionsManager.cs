@@ -11,7 +11,7 @@ namespace Diwip.UI.Screens
     /// </summary>
     public abstract class Transition : MonoBehaviour
     {
-        TransitionComplete onTransitionComplete;
+        private TransitionComplete _onTransitionComplete;
 
         public abstract void Play<T>(T from, T to, TransitionComplete onTransitionComplete) where T : BaseScreen;
     }
@@ -23,17 +23,18 @@ namespace Diwip.UI.Screens
     /// </summary>
     public class TransitionsManager : MonoBehaviour
     {
-        public TransitionComplete onTransitionComplete;
+        public TransitionComplete OnTransitionComplete;
 
-        BaseScreen from, to;
+        private BaseScreen _from;
+        private BaseScreen _to;
 
         public void Transition(BaseScreen from, BaseScreen to)
         {
             if (from == to)
                 from = null;
 
-            this.to = to;
-            this.from = from;
+            this._to = to;
+            this._from = from;
 
             Transition transition = null;
 
@@ -41,13 +42,13 @@ namespace Diwip.UI.Screens
             {
                 to.Show();
                 to.Disable();
-                transition = to.transition;
+                transition = to.Transition;
             }
 
             if (from != null)
             {
                 from.Disable();
-                transition = from.transition;
+                transition = from.Transition;
             }
 
             if (transition != null)
@@ -56,15 +57,15 @@ namespace Diwip.UI.Screens
                 OnComplete();
         }
 
-        void OnComplete()
+        private void OnComplete()
         {
-            if (to != null) to.Enable();
-            if (from != null) from.Hide();
+            if (_to != null) _to.Enable();
+            if (_from != null) _from.Hide();
 
-            to = from = null;
+            _to = _from = null;
 
-            if (onTransitionComplete != null)
-                onTransitionComplete();
+            if (OnTransitionComplete != null)
+                OnTransitionComplete();
         }
     }
 }

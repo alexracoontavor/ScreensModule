@@ -5,65 +5,65 @@ using UnityEngine.UI;
 
 public class WeightedRandomDistributionViewPopulator : MonoBehaviour {
 
-    public InputField inputField;
-    public WeightedRandomDistributionController controller;
-    public GameObject item;
-    public Transform listRoot;
+    public InputField InputField;
+    public WeightedRandomDistributionController Controller;
+    public GameObject Item;
+    public Transform ListRoot;
 
-    List<WeightedListItemController> items;
+    private List<WeightedListItemController> _items;
 
-    bool isWaitingToRepopulate;
+    private bool _isWaitingToRepopulate;
 
     // Use this for initialization
-    void Start() {
-        items = new List<WeightedListItemController>();
+    private void Start() {
+        _items = new List<WeightedListItemController>();
         Repopulate();
     }
 
     public void EditComplete()
     {
-        controller.Repopulate(Int32.Parse(inputField.text));
+        Controller.Repopulate(Int32.Parse(InputField.text));
     }
 
     public void Repopulate()
     {
-        items.Clear();
+        _items.Clear();
 
-        inputField.text = controller.numValues.ToString();
+        InputField.text = Controller.NumValues.ToString();
 
-        int children = listRoot.childCount;
+        int children = ListRoot.childCount;
 
         for (int i = 0; i < children; i++)
         {
-            DestroyImmediate(listRoot.GetChild(0).gameObject);
+            DestroyImmediate(ListRoot.GetChild(0).gameObject);
         }
 
-        for (int i = 0; i < controller.numValues; i++)
+        for (int i = 0; i < Controller.NumValues; i++)
         {
-            GameObject go = Instantiate(item);
-            go.transform.SetParent(listRoot);
-            items.Add(go.GetComponent<WeightedListItemController>());
+            GameObject go = Instantiate(Item);
+            go.transform.SetParent(ListRoot);
+            _items.Add(go.GetComponent<WeightedListItemController>());
         }
 
-        int[] weights = controller.Distributor.Weights;
+        int[] weights = Controller.Distributor.Weights;
 
-        for (int i = 0; i < items.Count; i++)
+        for (int i = 0; i < _items.Count; i++)
         {
-            items[i].Populate(this, weights[i], controller.Distributor.HighestWeight);
+            _items[i].Populate(this, weights[i], Controller.Distributor.HighestWeight);
         }
     }
 
     public void ItemEditComplete(WeightedListItemController item, int newValue)
     {
-        controller.Distributor.RedistributeWeights(items.IndexOf(item), newValue);
-        isWaitingToRepopulate = true;
+        Controller.Distributor.RedistributeWeights(_items.IndexOf(item), newValue);
+        _isWaitingToRepopulate = true;
     }
 
-    void Update()
+    private void Update()
     {
-        if (isWaitingToRepopulate)
+        if (_isWaitingToRepopulate)
         {
-            isWaitingToRepopulate = false;
+            _isWaitingToRepopulate = false;
             Repopulate();
         }
     }

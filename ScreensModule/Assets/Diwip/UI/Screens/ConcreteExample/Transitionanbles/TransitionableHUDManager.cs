@@ -11,14 +11,14 @@ namespace Diwip.UI.Screens.ConcreteExample
     {
         public override void Hide(Type screenType)
         {
-            BaseScreen to = screensManager.GetInstanceByType(screenType);
-            transitions.Transition(to, null);
+            BaseScreen to = ScreensManager.GetInstanceByType(screenType);
+            Transitions.Transition(to, null);
         }
 
         public override void Show(Type screenType)
         {
-            BaseScreen to = screensManager.GetInstanceByType(screenType);
-            transitions.Transition(null, to);
+            BaseScreen to = ScreensManager.GetInstanceByType(screenType);
+            Transitions.Transition(null, to);
         }
     }
 }

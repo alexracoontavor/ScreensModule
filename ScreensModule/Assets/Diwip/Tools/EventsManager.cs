@@ -10,45 +10,45 @@ namespace Diwip.Tools.Events
 
     public static class EventsManager
     {
-        static Dictionary<System.Type, List<BaseEventHandler>> events = new Dictionary<System.Type, List<BaseEventHandler>>();
+        private static Dictionary<System.Type, List<BaseEventHandler>> _events = new Dictionary<System.Type, List<BaseEventHandler>>();
 
         public static void AddListener(System.Type eventType, BaseEventHandler handler)
         {
-            if (!events.ContainsKey(eventType))
+            if (!_events.ContainsKey(eventType))
             {
-                events[eventType] = new List<BaseEventHandler>();
+                _events[eventType] = new List<BaseEventHandler>();
             }
 
-            if (!events[eventType].Contains(handler))
+            if (!_events[eventType].Contains(handler))
             {
-                events[eventType].Add(handler);
+                _events[eventType].Add(handler);
             }
         }
 
         public static void RemoveListener(System.Type eventType, BaseEventHandler handler)
         {
-            if (events.ContainsKey(eventType))
+            if (_events.ContainsKey(eventType))
             {
-                if (events[eventType].Contains(handler))
+                if (_events[eventType].Contains(handler))
                 {
-                    events[eventType].Remove(handler);
+                    _events[eventType].Remove(handler);
                 }
             }
         }
 
         public static void ClearEventListeners(System.Type eventType)
         {
-            if (events.ContainsKey(eventType))
+            if (_events.ContainsKey(eventType))
             {
-                events.Remove(eventType);
+                _events.Remove(eventType);
             }
         }
 
         internal static void Dispatch<T>(T eventInstance) where T : BaseEvent
         {
-            if (events.ContainsKey(typeof(T)))
+            if (_events.ContainsKey(typeof(T)))
             {
-                foreach (BaseEventHandler handler in events[typeof(T)])
+                foreach (BaseEventHandler handler in _events[typeof(T)])
                 {
                     handler(eventInstance);
                 }

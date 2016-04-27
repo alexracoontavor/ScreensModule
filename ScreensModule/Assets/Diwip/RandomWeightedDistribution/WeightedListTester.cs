@@ -4,30 +4,30 @@ using UnityEngine.UI;
 
 public class WeightedListTester : MonoBehaviour {
 
-    public Text output;
-    public WeightedRandomDistributionController controller;
-    public int cycles = 10000;
-    public InputField cyclesIF;
+    public Text Output;
+    public WeightedRandomDistributionController Controller;
+    public int Cycles = 10000;
+    public InputField CyclesIf;
 
     public void Start()
     {
-        cyclesIF.text = cycles.ToString();
+        CyclesIf.text = Cycles.ToString();
     }
 
     public void UpdateCyclesInputField()
     {
-        cycles = Int32.Parse(cyclesIF.text);
+        Cycles = Int32.Parse(CyclesIf.text);
     }
 
     public void Test()
     {
-        string s = cycles.ToString() + " cycles:\n\n";
+        string s = Cycles.ToString() + " cycles:\n\n";
 
-        int[] outcomes = new int[controller.Distributor.Weights.Length];
+        int[] outcomes = new int[Controller.Distributor.Weights.Length];
 
-        for (int i = 0; i < cycles; i++)
+        for (int i = 0; i < Cycles; i++)
         {
-            int val = controller.Distributor.GetRandomWeightedValue();
+            int val = Controller.Distributor.GetRandomWeightedValue();
 
             outcomes[val]++;
         }
@@ -37,7 +37,7 @@ public class WeightedListTester : MonoBehaviour {
             s += "\n" + i.ToString() + ": " + outcomes[i].ToString();
         }
 
-        output.text = s;
+        Output.text = s;
     }
 
 }

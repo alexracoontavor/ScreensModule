@@ -15,35 +15,34 @@ namespace Diwip.UI.Screens.ConcreteExample
     /// </summary>
     public class TransitionablePopupManager : TransitionableManagerBase
     {
-        [SerializeField]
-        Color backgroundColor;
-        List<Type> typesToShow = new List<Type>();
-        PopupBackground background;
+        [SerializeField] private Color _backgroundColor;
+        private List<Type> _typesToShow = new List<Type>();
+        private PopupBackground _background;
 
         protected override void Start()
         {
             base.Start();
 
-            background = gameObject.AddComponent<PopupBackground>();
-            background.Initialize(backgroundColor, HandleBGClick);
+            _background = gameObject.AddComponent<PopupBackground>();
+            _background.Initialize(_backgroundColor, HandleBgClick);
         }
 
-        private void HandleBGClick()
+        private void HandleBgClick()
         {
-            if (currentTop != null)
+            if (CurrentTop != null)
             {
-                Hide(currentTop);
+                Hide(CurrentTop);
             }
         }
 
         public override void Hide(Type screenType)
         {
-            if (currentTop != null)
+            if (CurrentTop != null)
             {
-                if (typesToShow.Count == 0)
+                if (_typesToShow.Count == 0)
                 {
-                    transitions.Transition(currentTop, null);
-                    currentTop = null;
+                    Transitions.Transition(CurrentTop, null);
+                    CurrentTop = null;
                 }
 
                 ShowNext();
@@ -52,9 +51,9 @@ namespace Diwip.UI.Screens.ConcreteExample
 
         public override void Show(Type screenType)
         {
-            if (currentTop == null)
+            if (CurrentTop == null)
             {
-                ShowInstance(screensManager.GetInstanceByType(screenType));
+                ShowInstance(ScreensManager.GetInstanceByType(screenType));
             }
             else
             {
@@ -64,47 +63,47 @@ namespace Diwip.UI.Screens.ConcreteExample
 
         private void Enqueue(Type screenType)
         {
-            var typeToEnque = screensManager.GetInstanceByType(screenType);
+            var typeToEnque = ScreensManager.GetInstanceByType(screenType);
 
-            if (typesToShow.Count > 0)
+            if (_typesToShow.Count > 0)
             {
-                if (!typesToShow.Contains(screenType))
+                if (!_typesToShow.Contains(screenType))
                 {
-                    for (int i = 0; i < typesToShow.Count; i++)
+                    for (int i = 0; i < _typesToShow.Count; i++)
                     {
-                        var enquedType = screensManager.GetInstanceByType(typesToShow[i]);
+                        var enquedType = ScreensManager.GetInstanceByType(_typesToShow[i]);
 
-                        if (typeToEnque.priority >= enquedType.priority)
+                        if (typeToEnque.Priority >= enquedType.Priority)
                         {
-                            typesToShow.Insert(i, screenType);
+                            _typesToShow.Insert(i, screenType);
                             return;
                         }
                     }
 
-                    typesToShow.Add(screenType);
+                    _typesToShow.Add(screenType);
                 }
             }
             else 
             {
-                typesToShow.Insert(0, screenType);
+                _typesToShow.Insert(0, screenType);
             }
         }
 
         protected void ShowInstance(BaseScreen instance)
         {
-            transitions.Transition(currentTop, instance);
-            currentTop = instance;
-            background.Attach(currentTop.transform);
+            Transitions.Transition(CurrentTop, instance);
+            CurrentTop = instance;
+            _background.Attach(CurrentTop.transform);
         }
 
         protected void ShowNext()
         {
-            if (typesToShow.Count > 0)
+            if (_typesToShow.Count > 0)
             {
-                Type nextType = typesToShow[typesToShow.Count - 1];
+                Type nextType = _typesToShow[_typesToShow.Count - 1];
 
-                typesToShow.RemoveAt(typesToShow.Count - 1);
-                ShowInstance(screensManager.GetInstanceByType(nextType));
+                _typesToShow.RemoveAt(_typesToShow.Count - 1);
+                ShowInstance(ScreensManager.GetInstanceByType(nextType));
             }
         }
     }

@@ -13,38 +13,38 @@ namespace Diwip.UI.Screens.ConcreteExample
     /// </summary>
     public abstract class SimpleScreen : BaseScreen
     {
-        public CanvasGroup canvasGroup;
+        public CanvasGroup CanvasGroup;
 
         [SerializeField]
-        protected Animator animator;
+        protected Animator Animator;
 
-        protected Action animFinishedCallback;
-        protected TransitionComplete onTransitionComplete;
+        protected Action AnimFinishedCallback;
+        protected TransitionComplete OnTransitionComplete;
 
-        protected Canvas canvas;
-        protected GraphicRaycaster graphicRaycaster;
+        protected Canvas Canvas;
+        protected GraphicRaycaster GraphicRaycaster;
 
-        protected string currentAnimName = "";
-        protected string inAnimName = "In";
-        protected string outAnimName = "Out";
-        protected int currNormalizedTime = 0;
+        protected string CurrentAnimName = "";
+        protected string InAnimName = "In";
+        protected string OutAnimName = "Out";
+        protected int CurrNormalizedTime = 0;
 
         /// <summary>
         /// Gets the instances / pipeline connections needed for the concrete implementation
         /// </summary>
         protected override void Start()
         {
-            canvas = transform.GetOrAddComponent<Canvas>();
-            canvas.overrideSorting = true;
-            graphicRaycaster = transform.GetOrAddComponent<GraphicRaycaster>();
-            canvasGroup = transform.GetOrAddComponent<CanvasGroup>();
+            Canvas = transform.GetOrAddComponent<Canvas>();
+            Canvas.overrideSorting = true;
+            GraphicRaycaster = transform.GetOrAddComponent<GraphicRaycaster>();
+            CanvasGroup = transform.GetOrAddComponent<CanvasGroup>();
 
             base.Start();
         }
 
         protected void Update()
         {
-            if (currentAnimName != "")
+            if (CurrentAnimName != "")
             {
                 CheckAnimFinished();
             }
@@ -52,14 +52,14 @@ namespace Diwip.UI.Screens.ConcreteExample
 
         private void CheckAnimFinished()
         {
-            AnimatorStateInfo info = animator.GetCurrentAnimatorStateInfo(0);
+            AnimatorStateInfo info = Animator.GetCurrentAnimatorStateInfo(0);
 
-            if (info.IsName(currentAnimName))
+            if (info.IsName(CurrentAnimName))
             {
-                if (currNormalizedTime == -1)
-                    currNormalizedTime = (int)animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+                if (CurrNormalizedTime == -1)
+                    CurrNormalizedTime = (int)Animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
 
-                if ((int)info.normalizedTime > currNormalizedTime)
+                if ((int)info.normalizedTime > CurrNormalizedTime)
                 {
                     DismissAnim();
                 }
@@ -71,7 +71,7 @@ namespace Diwip.UI.Screens.ConcreteExample
         /// </summary>
         public virtual void Close()
         {
-            screensManager.Hide(GetType());
+            ScreensManager.Hide(GetType());
         }
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace Diwip.UI.Screens.ConcreteExample
         /// </summary>
         public override void Disable()
         {
-            graphicRaycaster.enabled = canvasGroup.blocksRaycasts = canvasGroup.interactable = false;
+            GraphicRaycaster.enabled = CanvasGroup.blocksRaycasts = CanvasGroup.interactable = false;
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace Diwip.UI.Screens.ConcreteExample
         /// </summary>
         public override void Enable()
         {
-            graphicRaycaster.enabled = canvasGroup.blocksRaycasts = canvasGroup.interactable = true;
+            GraphicRaycaster.enabled = CanvasGroup.blocksRaycasts = CanvasGroup.interactable = true;
         }
 
         /// <summary>
@@ -121,13 +121,13 @@ namespace Diwip.UI.Screens.ConcreteExample
             Show();
             Disable();
 
-            currentAnimName = "In";
+            CurrentAnimName = "In";
 
-            animFinishedCallback = Enable;
+            AnimFinishedCallback = Enable;
 
-            this.onTransitionComplete = onTransitionComplete;
+            this.OnTransitionComplete = onTransitionComplete;
 
-            if (animator != null)
+            if (Animator != null)
             {
                 PlayAnim();
             }
@@ -139,10 +139,10 @@ namespace Diwip.UI.Screens.ConcreteExample
 
         private void PlayAnim()
         {
-            if (animator != null)
+            if (Animator != null)
             {
-                animator.Play(currentAnimName, 0, 0.0f);
-                currNormalizedTime = -1;
+                Animator.Play(CurrentAnimName, 0, 0.0f);
+                CurrNormalizedTime = -1;
             }
         }
 
@@ -154,11 +154,11 @@ namespace Diwip.UI.Screens.ConcreteExample
         {
             Disable();
 
-            currentAnimName = "Out";
+            CurrentAnimName = "Out";
 
-            animFinishedCallback = Hide;
+            AnimFinishedCallback = Hide;
 
-            this.onTransitionComplete = onTransitionComplete;
+            this.OnTransitionComplete = onTransitionComplete;
 
             if (enabled)
             {
@@ -175,18 +175,18 @@ namespace Diwip.UI.Screens.ConcreteExample
         /// </summary>
         private void DismissAnim()
         {
-            currentAnimName = "";
+            CurrentAnimName = "";
 
-            if (animFinishedCallback != null)
+            if (AnimFinishedCallback != null)
             {
-                animFinishedCallback();
-                animFinishedCallback = null;
+                AnimFinishedCallback();
+                AnimFinishedCallback = null;
             }
 
-            if (onTransitionComplete != null)
+            if (OnTransitionComplete != null)
             {
-                onTransitionComplete();
-                onTransitionComplete = null;
+                OnTransitionComplete();
+                OnTransitionComplete = null;
             }
         }
     }

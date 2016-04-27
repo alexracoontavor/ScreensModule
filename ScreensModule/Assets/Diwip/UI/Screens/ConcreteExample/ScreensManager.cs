@@ -8,9 +8,9 @@ namespace Diwip.UI.Screens.ConcreteExample
 {
     public class ScreenManagerEvent : BaseEvent
     {
-        public Type handledType;
-        public bool isShowing = false;
-        public Action<BaseScreen> onComplete;
+        public Type HandledType;
+        public bool IsShowing = false;
+        public Action<BaseScreen> OnComplete;
     }
 
     /// <summary>
@@ -20,18 +20,15 @@ namespace Diwip.UI.Screens.ConcreteExample
     /// </summary>
     public class ScreensManager : TransitionablesManager
     {
-        [SerializeField]
-        TransitionableManagerBase screensTransitioner;
-        [SerializeField]
-        TransitionableManagerBase popupsTransitioner;
-        [SerializeField]
-        TransitionableManagerBase hudTransitioner;
+        [SerializeField] private TransitionableManagerBase _screensTransitioner;
+        [SerializeField] private TransitionableManagerBase _popupsTransitioner;
+        [SerializeField] private TransitionableManagerBase _hudTransitioner;
 
         protected override void PopulateTransitionManagers()
         {
-            transitionableManagers.Add(ScreenType.Screen, screensTransitioner);
-            transitionableManagers.Add(ScreenType.Popup, popupsTransitioner);
-            transitionableManagers.Add(ScreenType.HUD, hudTransitioner);
+            TransitionableManagers.Add(ScreenType.Screen, _screensTransitioner);
+            TransitionableManagers.Add(ScreenType.Popup, _popupsTransitioner);
+            TransitionableManagers.Add(ScreenType.Hud, _hudTransitioner);
         }
 
         protected override void Start()
@@ -45,18 +42,18 @@ namespace Diwip.UI.Screens.ConcreteExample
         {
             ScreenManagerEvent e = (ScreenManagerEvent)eventObject;
 
-            if (e.isShowing)
+            if (e.IsShowing)
             {
-                Show(e.handledType);
+                Show(e.HandledType);
             }
             else
             {
-                Hide(e.handledType);
+                Hide(e.HandledType);
             }
 
-            if (e.onComplete != null)
+            if (e.OnComplete != null)
             {
-                e.onComplete(GetInstanceByType(e.handledType));
+                e.OnComplete(GetInstanceByType(e.HandledType));
             }
         }
     }

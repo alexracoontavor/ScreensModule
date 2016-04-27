@@ -9,15 +9,15 @@ namespace Diwip.UI.Screens.ConcreteExample
     {
         public override void Hide(Type screenType)
         {
-            if (currentTop != null)
-                transitions.Transition(currentTop, null);
+            if (CurrentTop != null)
+                Transitions.Transition(CurrentTop, null);
         }
 
         public override void Show(Type screenType)
         {
-            BaseScreen to = screensManager.GetInstanceByType(screenType);
-            transitions.Transition(currentTop, to);
-            currentTop = to;
+            BaseScreen to = ScreensManager.GetInstanceByType(screenType);
+            Transitions.Transition(CurrentTop, to);
+            CurrentTop = to;
         }
 
         protected override void PopulateTransitionManagers()

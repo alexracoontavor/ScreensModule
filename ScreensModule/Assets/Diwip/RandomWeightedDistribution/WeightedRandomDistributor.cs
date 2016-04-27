@@ -3,9 +3,9 @@ using UnityEngine;
 
 public class WeightedRandomDistributor
 {
-    int[] _weights;
+    private int[] _weights;
 
-    int _totalWeight = 10000;
+    private int _totalWeight = 10000;
 
     public int TotalWeight
     {

@@ -8,15 +8,15 @@ namespace Diwip.Tools
 {
     public class SerializedDataImporter
     {
-        static string dirName = "Data";
+        private static string _dirName = "Data";
 
         public static T LoadData<T>(string filename)
         {
             T loaded;
 
-            if (Directory.Exists(dirName) && File.Exists(dirName + "/" + filename))
+            if (Directory.Exists(_dirName) && File.Exists(_dirName + "/" + filename))
             {
-                loaded = LoadFromHD<T>(filename);
+                loaded = LoadFromHd<T>(filename);
             }
             else
             {
@@ -26,10 +26,10 @@ namespace Diwip.Tools
             return loaded;
         }
 
-        private static T LoadFromHD<T>(string filename)
+        private static T LoadFromHd<T>(string filename)
         {
             BinaryFormatter bf = new BinaryFormatter();
-            FileStream file = File.Open(dirName + "/" + filename, FileMode.Open);
+            FileStream file = File.Open(_dirName + "/" + filename, FileMode.Open);
             T loadedData = (T)bf.Deserialize(file);
             file.Close();
             return loadedData;
@@ -52,7 +52,7 @@ namespace Diwip.Tools
             return default(T);
         }
 
-        static void UnpackMobileFile(string fileName)
+        private static void UnpackMobileFile(string fileName)
         {  //copies and unpacks file from apk to persistentDataPath where it can be accessed
             string destinationPath = System.IO.Path.Combine(Application.persistentDataPath, fileName);
             string sourcePath = System.IO.Path.Combine(Application.streamingAssetsPath, fileName);

@@ -1,37 +1,36 @@
 ﻿using UnityEngine;
 
 public class WeightedRandomDistributionController : MonoBehaviour {
+    private WeightedRandomDistributor _distributor;
+    public WeightedRandomDistributionViewPopulator View;
 
-    WeightedRandomDistributor distributor;
-    public WeightedRandomDistributionViewPopulator view;
-
-    public int numValues = 10;
+    public int NumValues = 10;
 
     public WeightedRandomDistributor Distributor
     {
         get
         {
-            return distributor;
+            return _distributor;
         }
 
         set
         {
-            distributor = value;
+            _distributor = value;
         }
     }
 
     // Use this for initialization
-    void Start () {
-        distributor = new WeightedRandomDistributor(numValues);
+    private void Start () {
+        _distributor = new WeightedRandomDistributor(NumValues);
 	}
 	
 	public void Repopulate(int numValues)
     {
-        if (this.numValues != numValues)
+        if (this.NumValues != numValues)
         {
-            this.numValues = numValues;
-            distributor = new WeightedRandomDistributor(numValues);
-            view.Repopulate();
+            this.NumValues = numValues;
+            _distributor = new WeightedRandomDistributor(numValues);
+            View.Repopulate();
         }
     }
 }

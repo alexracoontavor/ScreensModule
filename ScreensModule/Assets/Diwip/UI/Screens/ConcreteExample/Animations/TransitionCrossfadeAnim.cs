@@ -4,50 +4,49 @@ namespace Diwip.UI.Screens.ConcreteExample
 {
     public class TransitionCrossfadeAnim : Transition
     {
-        [SerializeField]
-        float duration = 1f;
-        [SerializeField]
-        iTween.EaseType easetype = iTween.EaseType.linear;
+        [SerializeField] private float _duration = 1f;
+        [SerializeField] private iTween.EaseType _easetype = iTween.EaseType.linear;
 
-        SimpleScreen from, to;
-        TransitionComplete onTransitionComplete;
+        private SimpleScreen _from;
+        private SimpleScreen _to;
+        private TransitionComplete _onTransitionComplete;
 
-        void Play()
+        private void Play()
         {
-            iTween.ValueTo(gameObject, iTween.Hash("from", 0, "to", 1f, "time", duration, "easetype", easetype, "onupdate", "OnUpdate", "oncomplete", "OnComplete"));
+            iTween.ValueTo(gameObject, iTween.Hash("from", 0, "to", 1f, "time", _duration, "easetype", _easetype, "onupdate", "OnUpdate", "oncomplete", "OnComplete"));
         }
 
-        void OnUpdate(float val)
+        private void OnUpdate(float val)
         {
-            if (from != null) from.canvasGroup.alpha = 1f - val;
-            if (to != null) to.canvasGroup.alpha = val;
+            if (_from != null) _from.CanvasGroup.alpha = 1f - val;
+            if (_to != null) _to.CanvasGroup.alpha = val;
         }
 
-        void OnComplete()
+        private void OnComplete()
         {
-            if (onTransitionComplete != null) onTransitionComplete();
+            if (_onTransitionComplete != null) _onTransitionComplete();
             Reset();
         }
 
         private void Reset()
         {
-            from = to = null;
-            onTransitionComplete = null;
+            _from = _to = null;
+            _onTransitionComplete = null;
         }
 
         public override void Play<T>(T from, T to, TransitionComplete onTransitionComplete)
         {
             if (from != null)
             {
-                this.from = from as SimpleScreen;
-                this.from.canvasGroup.alpha = 1f;
+                this._from = from as SimpleScreen;
+                this._from.CanvasGroup.alpha = 1f;
             }
             if (to != null)
             {
-                this.to = to as SimpleScreen;
-                this.to.canvasGroup.alpha = 0f;
+                this._to = to as SimpleScreen;
+                this._to.CanvasGroup.alpha = 0f;
             }
-            this.onTransitionComplete = onTransitionComplete;
+            this._onTransitionComplete = onTransitionComplete;
 
             Play();
         }

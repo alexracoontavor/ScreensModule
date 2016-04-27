@@ -6,17 +6,17 @@ namespace Diwip.UI.Screens.ConcreteExample
     {
         public override void Close()
         {
-            screensManager.Hide(GetType());
+            ScreensManager.Hide(GetType());
         }
 
         public void HideSelf()
         {
-            screensManager.Hide(GetType());
+            ScreensManager.Hide(GetType());
         }
 
         public void ShowScreen1()
         {
-            screensManager.Show(typeof(TestScreen1));
+            ScreensManager.Show(typeof(TestScreen1));
         }
     }
 }
